@@ -34,8 +34,27 @@ app.get('/reset', function (req, res) {
   db.query("DROP TABLE IF EXISTS emps");
   db.query("DROP TABLE IF EXISTS cats");
   db.query("DROP TABLE IF EXISTS tweets");
-  db.query("CREATE TABLE IF NOT EXISTS cats( ID integer PRIMARY KEY NOT NULL, firstname text NOT NULL, lastname text NOT NULL, variety text NOT NULL)");
-  db.query("CREATE TABLE IF NOT EXISTS tweets( ID integer PRIMARY KEY NOT NULL, firstname varchar(64) NOT NULL, lastname text NOT NULL, variety text NOT NULL)");
+
+  db.query(`CREATE TABLE IF NOT EXISTS cats(
+        ID serial PRIMARY KEY NOT NULL,
+        firstname text NOT NULL,
+        lastname text NOT NULL,
+        variety text NOT NULL)
+      `);
+
+  db.query(`CREATE TABLE IF NOT EXISTS tweets(
+        ID serial PRIMARY KEY NOT NULL,
+        firstname varchar(64) NOT NULL,
+        lastname text NOT NULL,
+        variety text NOT NULL
+        )`);
+
+  db.query(
+      `INSERT INTO cats
+      (firstname, lastname, variety) VALUES
+      ('harold', 'finch', 'tuxedo'),
+      ('harold', 'finch', 'tuxedo');`
+      );
   res.send('RESET');
 });
 
@@ -54,7 +73,13 @@ app.post('/submit', function(req,res){
 // Get request to /doThings that queries the DB and logs it
 app.get('/doThings', function (req, res) {
   console.log("NOT Doing things");
-  res.send("go away");
+  var sql = "SELECT * FROM cats;";
+  var args = [];
+
+
+  db.query( sql, args, function(err, result) {
+    res.send(JSON.stringify(result.rows, null, "    "));
+  });
 
   //console.log("Doing things");
   //var query = db.query("SELECT firstname, lastname FROM emps ORDER BY lastname, firstname");
