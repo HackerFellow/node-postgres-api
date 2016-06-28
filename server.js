@@ -9,6 +9,7 @@ var app = express();
 app.set('port', (process.env.PORT || 5000));
 
 
+
 //connection stream to database
 var conString = util.format("pg://%s:%s@%s:%s/%s",
     config.db.user,
@@ -16,6 +17,9 @@ var conString = util.format("pg://%s:%s@%s:%s/%s",
     config.db.host,
     config.db.port,
     config.db.db);
+
+// Create the database
+var db = new pg.Client(conString);
 
 //connect with err checking
 db.connect(function(err){
@@ -29,21 +33,11 @@ db.connect(function(err){
 app.get('/reset', function (req, res) {
   db.query("DROP TABLE IF EXISTS cats");
   db.query("DROP TABLE IF EXISTS tweets");
-  db.query("CREATE TABLE IF NOT EXISTS cats(
-    ID integer PRIMARY KEY NOT NULL,
-  firstname text NOT NULL,
-  lastname text NOT NULL,
-  variety text NOT NULL
-    )");
-db.query("CREATE TABLE IF NOT EXISTS tweets(
-  ID integer PRIMARY KEY NOT NULL,
-firstname varchar(64) NOT NULL,
-lastname text NOT NULL,
-variety text NOT NULL
-  )");
-db.query("INSERT INTO emps(firstname, lastname) values($1, $2)", ['Ronald', 'McDonald']);
-db.query("INSERT INTO emps(firstname, lastname) values($1, $2)", ['Mayor', 'McCheese']);
-res.send('RESET');
+  db.query("CREATE TABLE IF NOT EXISTS cats( ID integer PRIMARY KEY NOT NULL, firstname text NOT NULL, lastname text NOT NULL, variety text NOT NULL)");
+  db.query("CREATE TABLE IF NOT EXISTS tweets( ID integer PRIMARY KEY NOT NULL, firstname varchar(64) NOT NULL, lastname text NOT NULL, variety text NOT NULL)");
+  db.query("INSERT INTO emps(firstname, lastname) values($1, $2)", ['Ronald', 'McDonald']);
+  db.query("INSERT INTO emps(firstname, lastname) values($1, $2)", ['Mayor', 'McCheese']);
+  res.send('RESET');
 });
 
 //When GET /, send hello world
