@@ -1,0 +1,9 @@
+{
+	"db": {
+		"user": "nodeapi",
+		"pass": "hunter.2",
+		"host": "localhost",
+		"port": "5432",
+		"db": "nodeapi"
+	}
+}

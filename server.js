@@ -2,12 +2,19 @@
 
 var express = require('express');
 var pg = require("pg");
+const util = require('util');
+const config = require("./config.json");
 
 var app = express();
 app.set('port', (process.env.PORT || 5000));
 
 
-var conString = "pg://nodeapi:hunter.2@localhost:5432/nodeapi";
+var conString = util.format("pg://%s:%s@%s:%s/%s",
+		config.db.user,
+		config.db.pass,
+		config.db.host,
+		config.db.port,
+		config.db.db);
 var db = new pg.Client(conString);
 db.connect(function(err){
 	if(err){
