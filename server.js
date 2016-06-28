@@ -31,12 +31,11 @@ db.connect(function(err){
 
 //Make and fill stupid DB when GET request to /reset
 app.get('/reset', function (req, res) {
+  db.query("DROP TABLE IF EXISTS emps");
   db.query("DROP TABLE IF EXISTS cats");
   db.query("DROP TABLE IF EXISTS tweets");
   db.query("CREATE TABLE IF NOT EXISTS cats( ID integer PRIMARY KEY NOT NULL, firstname text NOT NULL, lastname text NOT NULL, variety text NOT NULL)");
   db.query("CREATE TABLE IF NOT EXISTS tweets( ID integer PRIMARY KEY NOT NULL, firstname varchar(64) NOT NULL, lastname text NOT NULL, variety text NOT NULL)");
-  db.query("INSERT INTO emps(firstname, lastname) values($1, $2)", ['Ronald', 'McDonald']);
-  db.query("INSERT INTO emps(firstname, lastname) values($1, $2)", ['Mayor', 'McCheese']);
   res.send('RESET');
 });
 
@@ -47,22 +46,26 @@ app.get('/', function (req, res) {
 
 // Post request to /submit, insert into DB
 app.post('/submit', function(req,res){
-  db.query("INSERT INTO emps(firstname, lastname) values($1, $2)", [req.query.firstname, req.query.lastname]);
-  res.send("inserted");
+  //db.query("INSERT INTO emps(firstname, lastname) values($1, $2)", [req.query.firstname, req.query.lastname]);
+  //res.send("inserted");
+  res.send("no");
 });
 
 // Get request to /doThings that queries the DB and logs it
 app.get('/doThings', function (req, res) {
-  console.log("Doing things");
-  var query = db.query("SELECT firstname, lastname FROM emps ORDER BY lastname, firstname");
-  query.on("row", function (row, result) {
-    result.addRow(row);
-  });
-  query.on("end", function (result) {
-    console.log(JSON.stringify(result.rows, null, "    "));
-    res.send(JSON.stringify(result.rows, null, "    "));
-    db.end();
-  });
+  console.log("NOT Doing things");
+  res.send("go away");
+
+  //console.log("Doing things");
+  //var query = db.query("SELECT firstname, lastname FROM emps ORDER BY lastname, firstname");
+  //query.on("row", function (row, result) {
+  //  result.addRow(row);
+  //});
+  //query.on("end", function (result) {
+  //  console.log(JSON.stringify(result.rows, null, "    "));
+  //  res.send(JSON.stringify(result.rows, null, "    "));
+  //  db.end();
+  //});
 });
 
 
