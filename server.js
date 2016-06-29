@@ -24,6 +24,7 @@ app.use(express.static(__dirname + '/public')); // set static folder
 
 
 //connection stream to database
+//"pg://user:pass@host:port/database"
 var conString = util.format("pg://%s:%s@%s:%s/%s",
 	config.db.user,
 	config.db.pass,
