@@ -12,5 +12,16 @@
 			</ul>
 		</nav>
 		{{> form}}
+    <div>
+      <ul>
+        {{#tweets}}
+        <li>
+          {{firstname}}
+          {{lastname}}
+          {{variety}}
+        </li>
+        {{/tweets}}
+      </ul>
+    </div>
 	</body>
 </html>

@@ -66,10 +66,24 @@ app.get('/reset', function (req, res) {
 
 //When GET /, send hello world
 app.get('/', function (req, res) {
-	//res.send('Hello World! <a href="/RESET">RESET</a><br><a href="doThings">doThings</a>');
-	res.render('master', {
-		title: 'CAT TWEEET '
-	});
+
+  var sql = "SELECT * FROM cats;";
+  var args = [];
+
+  db.query( sql, args, function(err, result) {
+    if (err) throw err;
+
+    // just print the result to the console
+    console.log(result.rows[0]); // outputs: { name: 'brianc' }
+
+    res.render('master', {
+      title: 'CAT TWEEET ',
+      tweets: result.rows
+    });
+
+  });
+
+
 });
 
 // Post request to /submit, insert into DB
