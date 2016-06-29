@@ -68,10 +68,7 @@ app.get('/reset', function (req, res) {
 app.get('/', function (req, res) {
 	//res.send('Hello World! <a href="/RESET">RESET</a><br><a href="doThings">doThings</a>');
 	res.render('master', {
-		head: {
-			title: 'page title'
-
-		}
+		title: 'CAT TWEEET '
 	});
 });
 
@@ -81,9 +78,12 @@ app.post('/submit', function(req,res){
 	// http://stackoverflow.com/a/12008719
 	// Install body-parser, and then set some settings, and then use req.body instead of req.query, which is url only?
 	console.log(req.body);
-	//db.query("INSERT INTO emps(firstname, lastname) values($1, $2)", [req.query.firstname, req.query.lastname]);
-	//res.send("inserted");
-	res.send("<pre>foo/pre>");
+	db.query(
+			`INSERT INTO cats
+			(firstname, lastname, variety) VALUES
+			($1, $2, $3);`,
+			[req.body.firstname, req.body.lastname, req.body.type]);
+	res.redirect("/");
 });
 
 
